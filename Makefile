@@ -5,27 +5,27 @@ bindir=$(exec_prefix)/bin
 SRC=./src
 BIN=./bin
 BIN_STATIC=$(BIN)/x86_64
-NAME=fastq-lengths
-CC=gcc
+NAME=fastq-namefilter
+CXX=g++
 
-CFLAGS=-O3 -Wextra -Wall -Wconversion -std=c1x -mtune=native
+CFLAGS=-O3 -Wextra -Wall -Wconversion -std=c++17 -mtune=native
 CFLAGS_STATIC=$(CFLAGS) -static -fdata-sections -ffunction-sections -Wl,--gc-sections -s -march=x86-64 -mtune=generic
 INSTALL=install
 INSTALL_PROGRAM=$(INSTALL)
 
 .PHONY: all clean
-all: fastq-lengths
-static: fastq-lengths-static
+all: fastq-namefilter
+static: fastq-namefilter-static
 
 $(SRC)/%.o: %.c
-	$(CC) $(CFLAGS) -c -o $(SRC)/$@ $^
+	$(CXX) $(CFLAGS) -c -o $(SRC)/$@ $^
 
-fastq-lengths: $(SRC)/fastq-lengths.o
+fastq-namefilter: $(SRC)/fastq-namefilter.o
 	mkdir -p $(BIN)
-	$(CC) $(CFLAGS) -o$(BIN)/$@ $^
-fastq-lengths-static: $(SRC)/fastq-lengths.o
+	$(CXX) $(CFLAGS) -o$(BIN)/$@ $^
+fastq-namefilter-static: $(SRC)/fastq-namefilter.o
 	$(MAKE) BIN='$(BIN_STATIC)' CFLAGS='$(CFLAGS_STATIC)'\
-		fastq-lengths
+		fastq-namefilter
 
 install: $(BIN)/$(NAME) installdirs
 	$(INSTALL_PROGRAM) $< $(DESTDIR)$(bindir)
@@ -40,4 +40,4 @@ uninstall:
 
 clean:
 	rm -f $(SRC)/*.o
-	rm -rf $(BIN)/fastq-lengths
+	rm -rf $(BIN)/fastq-namefilter

@@ -2,10 +2,10 @@ FROM busybox
 
 LABEL base_image="busybox"
 LABEL version="2"
-LABEL software="fastq-lengths"
+LABEL software="fastq-namefilter"
 LABEL software.version="0.2.8"
-LABEL about.summary="quickly characterize fastq sequence lengths"
-LABEL about.home="https://github.com/yttria-aniseia/fastq-lengths"
+LABEL about.summary="quickly filter fastq sequences by name"
+LABEL about.home="https://github.com/yttria-aniseia/fastq-namefilter"
 
-COPY bin/x86_64/fastq-lengths /usr/local/bin/fastq-lengths
-CMD ["fastq-lengths" "in.fastq"]
+COPY bin/x86_64/fastq-namefilter /usr/local/bin/fastq-namefilter
+CMD ["fastq-namefilter" "name.list" "in.fastq"]
