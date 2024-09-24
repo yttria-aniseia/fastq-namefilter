@@ -1,10 +1,9 @@
 #include <fstream>
 #include <iostream>
-//#include <iterator>
 #include <limits>
-//#include <sstream>
 #include <string>
-#include <unordered_set>
+
+#include "unordered_dense.h"
 
 int main(int argc, char* argv[]) {
 	if (argc != 2 && argc != 3) {
@@ -16,9 +15,8 @@ int main(int argc, char* argv[]) {
 
 	std::ifstream name_file(name_fname, std::ios::in);
 	std::string line;
-	
-	std::unordered_set<std::string> names_ht;
-	names_ht.reserve(419858);
+
+	auto names_ht = ankerl::unordered_dense::set<std::string>();
 	while (std::getline(name_file, line))
 		names_ht.insert(line);
 	name_file.close();
@@ -29,7 +27,7 @@ int main(int argc, char* argv[]) {
 	
 	while (std::getline(fastq, line)) {
 		if (line[0] != '@') {
-			(void) fprintf(stderr, "unexpected @ in fastq\n");
+			(void) fprintf(stderr, "expected @ in fastq\n");
 			exit(1);
 		}
 		std::string::size_type delim_pos;
