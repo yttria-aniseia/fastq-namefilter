@@ -5,7 +5,7 @@ bindir=$(exec_prefix)/bin
 SRC=./src
 BIN=./bin
 BIN_STATIC=$(BIN)/x86_64
-NAME=fastq-namefilter
+NAME=fastq-namefilter fastq-numfilter
 CXX=g++
 INC_DIRS := $(shell find 3rdparty -type d)
 INC_FLAGS := $(addprefix -I,$(INC_DIRS))
@@ -17,8 +17,8 @@ INSTALL=install
 INSTALL_PROGRAM=$(INSTALL)
 
 .PHONY: all static clean
-all: fastq-namefilter
-static: fastq-namefilter-static
+all: fastq-namefilter fastq-numfilter
+static: fastq-namefilter-static fastq-numfilter-static
 
 $(SRC)/%.o: %.c
 	$(CXX) $(CPPFLAGS) -c -o $(SRC)/$@ $^
@@ -29,6 +29,15 @@ fastq-namefilter: $(SRC)/fastq-namefilter.o
 fastq-namefilter-static: $(SRC)/fastq-namefilter.o
 	$(MAKE) BIN='$(BIN_STATIC)' CFLAGS='$(CPPFLAGS_STATIC)'\
 		fastq-namefilter $(LIB)
+
+fastq-numfilter: $(SRC)/fastq-numfilter.o
+	mkdir -p $(BIN)
+	$(CXX) $(CPPFLAGS) -o$(BIN)/$@ $^ $(LIB)
+fastq-numfilter-static: $(SRC)/fastq-numfilter.o
+	$(MAKE) BIN='$(BIN_STATIC)' CFLAGS='$(CPPFLAGS_STATIC)'\
+		fastq-numfilter $(LIB)
+
+
 
 install: $(BIN)/$(NAME) installdirs
 	$(INSTALL_PROGRAM) $< $(DESTDIR)$(bindir)
